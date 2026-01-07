@@ -1,16 +1,5 @@
 class Solution {
 public:
-    bool isPresentInDict(int start, int end, string fullWord, vector<string>& wordDict, unordered_set<string> st){
-
-        string sub = fullWord.substr(start, end-start+1);
-
-        if(st.find(sub) != st.end()){
-            return true;
-        }
-
-        return false;
-    }
-
     bool solve(int ind, string fullWord, vector<string>& wordDict, unordered_set<string> st, vector<int>& dp){
         
         int n = fullWord.size();
