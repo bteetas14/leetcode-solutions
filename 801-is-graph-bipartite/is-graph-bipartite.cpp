@@ -1,29 +1,29 @@
 class Solution {
 public:
-    bool coloring(int node, int color, vector<vector<int>>& graph, vector<int>& vis){
-        vis[node] = color;
+    bool solve(int node, int color, vector<int>& colorMat, vector<vector<int>>& adj){
 
-        for(auto it:graph[node]){
+        colorMat[node] = color;
 
-            if(vis[it]!=-1 && vis[it]==color){
+        for(auto it:adj[node]){
+            if(colorMat[it]==color){
                 return false;
             }
-
-            if(vis[it]==-1){
-                if(coloring(it, !color, graph, vis)==false) return false;
+            else if(colorMat[it]==-1){
+                if(solve(it, !color, colorMat, adj)==false) return false;
             }
         }
         return true;
     }
 
-    bool isBipartite(vector<vector<int>>& graph) {
+    bool isBipartite(vector<vector<int>>& adj) {
 
-        int n = graph.size();
-        vector<int> vis(n, -1);
+        int n = adj.size();
 
-        for(int i=0;i<n;i++){
-            if(vis[i]==-1){
-                if(coloring(i, 0, graph, vis)==false) return false;
+        vector<int> colorMat(n, -1);
+        for(int i = 0; i < n; i++){
+        if(colorMat[i] == -1){
+            if(!solve(i, 0, colorMat, adj))
+                return false;
             }
         }
         return true;
