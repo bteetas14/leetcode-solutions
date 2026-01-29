@@ -11,10 +11,10 @@ public:
 
             mini = min(mini, nums[mid]);
 
-            if(nums[mid]>nums[high] && nums[low]<=nums[mid]){
+            if(nums[mid]>=nums[high] && nums[low]<=nums[mid]){
                 low = mid+1;
             }
-            else if(nums[mid]<=nums[high] && nums[low]>nums[mid]){
+            else if(nums[mid]<=nums[high] && nums[low]>=nums[mid]){
                 high = mid-1;
             }
             else{
