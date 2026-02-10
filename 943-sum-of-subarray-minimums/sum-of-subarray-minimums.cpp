@@ -1,3 +1,12 @@
+//      [3 1 2 4]
+// nse= [1 4 4 4]
+// pse= [-1 -1 1 2]
+// 
+// i=0, left=0-(-1)=1, right=1-0=1, val=3*1*1=3, sum=3
+// i=1, left=1-(-1)=2, right=4-1=3, val=1*2*3=6, sum=9
+// i=2, left=2-1=1   , right=4-2=2, val=2*1*2=4, sum=13
+// i=3, left=3-3=1   , right=4-3=1, val=4*1*1=4, sum=17
+// 
 class Solution {
 public:
     vector<int> findNSE(vector<int> arr){
