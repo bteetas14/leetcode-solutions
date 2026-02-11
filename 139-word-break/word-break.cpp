@@ -24,9 +24,25 @@ public:
         int n = s.size();
 
         unordered_set<string> st(wordDict.begin(), wordDict.end());
-        vector<int> dp(n, -1);
+        // vector<int> dp(n, -1);
+        // return solve(0, s, st, dp);
 
-        return solve(0, s, st, dp);
-        // return dp[n-1];
+        vector<bool> dp(n, false);
+
+        for(int ind=n-1; ind>=0; ind--){
+            if(st.count(s.substr(ind,n-ind))>0){
+                dp[ind] = true;
+            }
+            else{
+                for(int i=ind;i<n;i++){
+                    string sub = s.substr(ind, i-ind+1);
+
+                    if(st.count(sub)>0){
+                        if(dp[i+1]==true) dp[ind] = true;
+                    }
+                }
+            }
+        }
+        return dp[0];
     }
 };
