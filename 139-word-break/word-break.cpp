@@ -1,32 +1,32 @@
 class Solution {
 public:
-    bool solve(int ind, string fullWord, vector<string>& wordDict, unordered_set<string> st, vector<int>& dp){
-        
-        int n = fullWord.size();
+    bool solve(int ind, string s, unordered_set<string>& st, vector<int>& dp){
 
-        if(ind>n-1) return true;
+        int n = s.size();
+        if(ind>n-1) return false;
 
         if(dp[ind] != -1) return dp[ind];
 
-        if(st.count(fullWord.substr(ind, n-ind))>0) return dp[ind] = true;
+        if(st.count(s.substr(ind,n-ind))>0) return dp[ind] = true;
 
         for(int i=ind;i<n;i++){
-            // present
-            string sub = fullWord.substr(ind, i-ind+1);
+            string sub = s.substr(ind, i-ind+1);
 
-            if(st.count(sub) > 0){
-                if(solve(i+1, fullWord, wordDict, st, dp) == true) return dp[ind] = true;
+            if(st.count(sub)>0){
+                if(solve(i+1, s, st, dp)==true) return dp[ind] = true;
             }
         }
         return dp[ind] = false;
     }
 
-    bool wordBreak(string fullWord, vector<string>& wordDict) {
+    bool wordBreak(string s, vector<string>& wordDict) {
+
+        int n = s.size();
 
         unordered_set<string> st(wordDict.begin(), wordDict.end());
-        vector<int> dp(fullWord.size(), -1);
+        vector<int> dp(n, -1);
 
-        return solve(0, fullWord, wordDict, st, dp);
-        
+        return solve(0, s, st, dp);
+        // return dp[n-1];
     }
 };
