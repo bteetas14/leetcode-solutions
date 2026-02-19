@@ -20,9 +20,32 @@ public:
         int n = word1.size();
         int m = word2.size();
 
-        vector<vector<int>> dp(n, vector<int>(m,-1));
+        // vector<vector<int>> dp(n, vector<int>(m,-1));
+        // int maxLen = solve(n-1, m-1, word1, word2, dp);
+        // return n+m - 2*maxLen;
 
-        int maxLen = solve(n-1, m-1, word1, word2, dp);
-        return n+m - 2*maxLen;
+        vector<vector<int>> dp(n+1, vector<int>(m+1,-1));
+
+        for(int i=0;i<=n;i++){
+            dp[i][0] = 0;
+        }
+        for(int j=0;j<=m;j++){
+            dp[0][j] = 0;
+        }
+
+        for(int n1=1;n1<=n;n1++){
+            for(int n2=1;n2<=m;n2++){
+                if(word1[n1-1]==word2[n2-1]){
+                    dp[n1][n2] = 1 + dp[n1-1][n2-1];
+                }
+                else{
+                    int right = dp[n1-1][n2];
+                    int left = dp[n1][n2-1];
+
+                    dp[n1][n2] = max(left, right);
+                }
+            }
+        }
+        return n+m - 2*dp[n][m];
     }
 };
