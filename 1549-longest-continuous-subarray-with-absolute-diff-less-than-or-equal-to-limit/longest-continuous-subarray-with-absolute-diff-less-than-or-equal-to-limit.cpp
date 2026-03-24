@@ -3,32 +3,31 @@ public:
     int longestSubarray(vector<int>& nums, int limit) {
 
         int n = nums.size();
-        int maxLen = 0, i, start = 0;
-        priority_queue<pair<int, int>, 
-            vector<pair<int, int>>, 
+        priority_queue<pair<int, int>,
+            vector<pair<int, int>>,
             greater<pair<int, int>>> minh;
-
+        
         priority_queue<pair<int, int>> maxh;
+        int mini = 1e9, maxi = -1e9, start = 0, maxLen = -1e9;
 
-        for(int i=0; i<n && start<n; i++){
-            maxh.push({nums[i], i});
+        for(int i=0;i<n;i++){
             minh.push({nums[i], i});
+            maxh.push({nums[i], i});
 
-            auto mini = minh.top();
-            auto maxi = maxh.top();
+            mini = min(mini, minh.top().first);
+            maxi = max(maxi, maxh.top().first);
 
-            if(abs(maxi.first - mini.first) <= limit){
+            if(abs(maxh.top().first - minh.top().first) <= limit){
                 maxLen = max(maxLen, i-start+1);
             }
             else{
-                // int miniIdx = mini.second;
-                while(abs(minh.top().first - maxh.top().first) > limit){
+                while(abs(maxh.top().first - minh.top().first) > limit){
                     start++;
-                    while(minh.top().second < start){
-                        minh.pop();
-                    }
                     while(maxh.top().second < start){
                         maxh.pop();
+                    }
+                    while(minh.top().second < start){
+                        minh.pop();
                     }
                 }
             }
