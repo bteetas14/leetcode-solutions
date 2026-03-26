@@ -16,12 +16,12 @@ public:
 
     void inorder(TreeNode* node, int k){
         if(node==NULL) return;
+
         inorder(node->left, k);
 
         count++;
         if(count==k){
             result = node->val;
-            return;
         }
 
         inorder(node->right, k);
