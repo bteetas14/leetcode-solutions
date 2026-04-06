@@ -2,7 +2,6 @@ class Solution {
 public:
     vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
 
-        vector<int> vis(numCourses, 0);
         vector<vector<int>> adj(numCourses);
         vector<int> indegree(numCourses, 0);
         queue<int> q;
