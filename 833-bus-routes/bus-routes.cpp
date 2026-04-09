@@ -6,8 +6,8 @@ public:
 
         unordered_map<int, vector<int>> adjMap;
         for(int i=0;i<routes.size();i++){
-            for(auto stop: routes[i]){
-                adjMap[stop].push_back(i);
+            for(auto it:routes[i]){
+                adjMap[it].push_back(i);
             }
         }
 
@@ -21,16 +21,17 @@ public:
         int busesTaken = 1;
 
         while(!q.empty()){
-            int size = q.size();
+            int sz = q.size();
 
-            while(size--){
+            while(sz--){
                 int bus = q.front();
                 q.pop();
 
-                for(auto stops: routes[bus]){
-                    if(stops == target) 
+                for(auto stop:routes[bus]){
+                    if(target==stop){
                         return busesTaken;
-                    for(auto b: adjMap[stops]){
+                    }
+                    for(auto b:adjMap[stop]){
                         if(visBuses.count(b)==0){
                             q.push(b);
                             visBuses.insert(b);
@@ -41,6 +42,5 @@ public:
             busesTaken++;
         }
         return -1;
-        
     }
 };
