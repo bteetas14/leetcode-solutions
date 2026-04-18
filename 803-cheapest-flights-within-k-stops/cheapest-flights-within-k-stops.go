@@ -1,58 +1,50 @@
 func findCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {
-    
-    // Define edge struct (cleaner than [2]int)
-    type Edge struct {
-        to   int
-        cost int
+
+    type Pair struct{
+        First int
+        Second int
     }
 
-    // Build graph
-    graph := make(map[int][]Edge)
-    for _, f := range flights {
-        from, to, price := f[0], f[1], f[2]
-        graph[from] = append(graph[from], Edge{to, price})
+    type State struct{
+        Node int
+        Stops int
+        Dist int
     }
 
-    // Distance array (min cost to reach each city)
-    const INF = int(1e9)
-    dist := make([]int, n)
-    for i := 0; i < n; i++ {
-        dist[i] = INF
-    }
-    dist[src] = 0
+    // n := len(flights)
+    adj := make([][]Pair, n)
 
-    // Queue for BFS: (city, cost, stops)
-    type State struct {
-        city  int
-        cost  int
-        stops int
+    for _ , it:= range flights {
+        u := it[0]
+        v := it[1]
+        wt := it[2]
+
+        adj[u] = append(adj[u], Pair{First: v, Second: wt})
     }
 
-    queue := []State{{src, 0, 0}}
+    dist := make([]int, n);
+    for i:=0; i<n; i++ {
+        dist[i] = 1e9
+    }
 
-    for len(queue) > 0 {
-        curr := queue[0]
-        queue = queue[1:]
+    q := []State{{src, 0, 0}}
 
-        // If we exceed allowed stops, skip
-        if curr.stops > k {
+    for len(q)>0{
+        curr := q[0]
+        q = q[1:]
+
+        if curr.Stops > k {
             continue
         }
 
-        // Explore neighbors
-        for _, edge := range graph[curr.city] {
-            nextCity := edge.to
-            newCost := curr.cost + edge.cost
-
-            // Relaxation condition
-            if newCost < dist[nextCity] {
-                dist[nextCity] = newCost
-                queue = append(queue, State{nextCity, newCost, curr.stops + 1})
+        for _ , it := range adj[curr.Node] {
+            if it.Second + curr.Dist < dist[it.First]{
+                dist[it.First] = it.Second + curr.Dist
+                q = append(q, State{it.First, curr.Stops+1, it.Second + curr.Dist})
             }
         }
     }
-
-    if dist[dst] == INF {
+    if dist[dst] == 1e9 {
         return -1
     }
     return dist[dst]
