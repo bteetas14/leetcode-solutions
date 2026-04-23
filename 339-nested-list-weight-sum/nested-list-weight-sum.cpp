@@ -37,6 +37,7 @@ public:
         while(!nestedList.empty()){
             vector<NestedInteger> nextList;
             level++;
+            
             for(auto& it: nestedList){
 
                 if(it.isInteger()){
