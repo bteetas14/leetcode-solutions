@@ -2,42 +2,41 @@ class Solution {
 public:
     string alienOrder(vector<string>& words) {
 
-        unordered_map<char, set<char>> adjMap;
+        int n = words.size();
+        unordered_map<char, vector<char>> mpp;
         unordered_map<char, int> indegree;
-        queue<char> q;
-        string ans = "";
 
-        for(auto word : words){
-            for(char c : word){
+        for(auto it:words){
+            for(auto c:it){
                 indegree[c] = 0;
             }
         }
 
-        for(int i=0;i<words.size()-1;i++){
-            string w1 = words[i];
-            string w2 = words[i+1];
+        for(int i=1;i<n;i++){
+            string word1 = words[i-1];
+            string word2 = words[i];
 
-            int len = min(w1.size(), w2.size());
-            bool found = false;
+            if(word1.size() > word2.size() && word1.substr(0, word2.size()) == word2)
+                return "";
 
-            for(int j=0;j<len;j++){
-                if(w1[j] != w2[j]){
-                    if(adjMap[w1[j]].count(w2[j]) == 0){
-                        adjMap[w1[j]].insert(w2[j]);
-                        indegree[w2[j]]++;
-                    }
-                    found = true;
+            int w1=0, w2=0;
+            while(w1<word1.size() && w2<word2.size()){
+                if(word1[w1]==word2[w2]){
+                    w1++;
+                    w2++;
+                }
+                else{
+                    mpp[word1[w1]].push_back(word2[w2]);
+                    indegree[word2[w2]]++;
                     break;
                 }
             }
-
-            if(!found && w1.size() > w2.size()){
-                return "";
-            }
         }
 
+        queue<char> q;
+        string result = "";
         for(auto it:indegree){
-            if(it.second == 0){
+            if(it.second==0){
                 q.push(it.first);
             }
         }
@@ -46,20 +45,16 @@ public:
             char c = q.front();
             q.pop();
 
-            ans += c;
+            result += c;
 
-            for(auto it:adjMap[c]){
+            for(auto it:mpp[c]){
                 indegree[it]--;
                 if(indegree[it]==0){
                     q.push(it);
                 }
             }
         }
-
-        if(ans.size() != indegree.size()){
-            return "";
-        }
-        
-        return ans;
+        if(result.size() != indegree.size()) return "";
+        return result;
     }
 };
