@@ -1,40 +1,35 @@
 class Solution {
 public:
     int swimInWater(vector<vector<int>>& grid) {
-        
+
         int n = grid.size();
         int m = grid[0].size();
 
-        priority_queue<
-            pair<int, pair<int, int>>,
-            vector<pair<int, pair<int, int>>>,
-            greater<pair<int, pair<int, int>>>> pq;
-        
-        int dx[] = {-1, 0, 1, 0};
-        int dy[] = {0, 1, 0, -1};
-        
+        int drow[] = {-1, 0, 1, 0};
+        int dcol[] = {0, 1, 0, -1};
+
+        priority_queue<tuple<int, int, int>,
+                    vector<tuple<int, int, int>>, 
+                    greater<tuple<int, int, int>>> pq;
+
         vector<vector<int>> vis(n, vector<int>(m, 0));
-        pq.push({grid[0][0], {0,0}});
+        
+        pq.push({grid[0][0], 0, 0});
+        vis[0][0] = 1;
 
         while(!pq.empty()){
-            auto curr = pq.top();
+            auto [time, r, c] = pq.top();
             pq.pop();
 
-            int time = curr.first;
-            int row = curr.second.first;
-            int col = curr.second.second;
-
-            if(row==n-1 && col==m-1) return time;
-            if(vis[row][col]==1) continue;
-            vis[row][col] = 1;
+            if(r==n-1 && c==m-1) return time;
 
             for(int i=0;i<4;i++){
-                int nrow = row + dx[i];
-                int ncol = col + dy[i];
+                int nrow = r + drow[i];
+                int ncol = c + dcol[i];
 
                 if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && vis[nrow][ncol]==0){
-                    int t = max(grid[nrow][ncol], time);
-                    pq.push({t, {nrow, ncol}});
+                    vis[nrow][ncol] = 1;
+                    pq.push({max(grid[nrow][ncol], time) , nrow, ncol});
                 }
             }
         }
