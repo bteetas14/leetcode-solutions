@@ -4,34 +4,39 @@ public:
 
         int n = heights.size();
         int m = heights[0].size();
-        vector<vector<int>> path(n, vector<int>(m,1e9));
+        vector<vector<int>> vis(n , vector<int>(m, 0));
 
-        queue<pair<int, pair<int, int>>> q;
-        q.push({0,{0, 0}});
-        path[0][0] = 0;
+        int drow[] = {-1, 0, 1, 0};
+        int dcol[] = {0, 1, 0, -1};
 
-        int delrow[] = {-1, 0, 1, 0};
-        int delcol[] = {0, 1, 0, -1};
+        priority_queue<tuple<int, int, int>,
+            vector<tuple<int, int, int>>, 
+            greater<tuple<int, int, int>>> pq;
 
-        while(!q.empty()){
-            int diff = q.front().first;
-            auto [r, c] = q.front().second;
-            q.pop();
+        pq.push({0, 0, 0});
+        // vis[0][0] = 1;
+
+        while(!pq.empty()){
+            auto [eff, r, c] = pq.top();
+            pq.pop();
+
+            if (vis[r][c]) continue;
+            vis[r][c] = 1;   
+
+            if(r==n-1 && c==m-1) return eff;
 
             for(int i=0;i<4;i++){
-                int nrow = r + delrow[i];
-                int ncol = c + delcol[i];
+                int nrow = r + drow[i];
+                int ncol = c + dcol[i];
 
-                if(nrow>=0 && nrow<n && ncol>=0 && ncol<m){
-                    int eff = max(diff, abs(heights[nrow][ncol] - heights[r][c]));
+                if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && vis[nrow][ncol]==0){
 
-                    if(eff < path[nrow][ncol]){
-                        q.push({eff, {nrow, ncol}});
-                        path[nrow][ncol] = eff;
-                    }
+                    int newEff = max(eff, abs(heights[r][c]-heights[nrow][ncol]));
+                    pq.push({newEff, nrow, ncol});
+                    // vis[nrow][ncol] = 1;
                 }
             }
         }
-        return path[n-1][m-1];
+        return -1;
     }
 };
