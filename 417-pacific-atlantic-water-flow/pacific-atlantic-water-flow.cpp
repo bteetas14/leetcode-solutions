@@ -1,18 +1,20 @@
 class Solution {
 public:
-    void dfs(int row, int col, vector<vector<int>>& heights, vector<vector<bool>>& vis){
+    void dfs(int r, int c, vector<vector<int>>& heights, vector<vector<bool>>& vis){
+
         int n = heights.size();
         int m = heights[0].size();
-        vis[row][col] = true;
 
-        int delrow[] = {-1, 0, 1, 0};
-        int delcol[] = {0, 1, 0, -1};
+        vis[r][c] = true;
+
+        int drow[] = {-1, 0, 1, 0};
+        int dcol[] = {0, 1, 0, -1};
 
         for(int i=0;i<4;i++){
-            int nrow = row + delrow[i];
-            int ncol = col + delcol[i];
+            int nrow = r + drow[i];
+            int ncol = c + dcol[i];
 
-            if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && vis[nrow][ncol]==0 && heights[nrow][ncol]>=heights[row][col]){
+            if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && vis[nrow][ncol]==0 && heights[nrow][ncol]>=heights[r][c]){
                 dfs(nrow, ncol, heights, vis);
             }
         }
@@ -23,26 +25,28 @@ public:
         int n = heights.size();
         int m = heights[0].size();
 
+        vector<vector<int>> ans;
+
         vector<vector<bool>> pacific(n, vector<bool>(m, false));
         vector<vector<bool>> atlantic(n, vector<bool>(m, false));
-        vector<vector<int>> ds;
 
-        for(int col=0;col<m;col++){
-            dfs(0, col, heights, pacific);
-            dfs(n-1, col, heights, atlantic);
+        for(int r=0;r<n;r++){
+            dfs(r, 0, heights, pacific);
+            dfs(r, m-1, heights, atlantic);
         }
-        for(int row=0;row<n;row++){
-            dfs(row, 0, heights, pacific);
-            dfs(row, m-1, heights, atlantic);
+
+        for(int c=0;c<m;c++){
+            dfs(0, c, heights, pacific);
+            dfs(n-1, c, heights, atlantic);
         }
 
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
                 if(pacific[i][j] && atlantic[i][j]){
-                    ds.push_back({i, j});
+                    ans.push_back({i, j});
                 }
             }
         }
-        return ds;
+        return ans;
     }
 };
