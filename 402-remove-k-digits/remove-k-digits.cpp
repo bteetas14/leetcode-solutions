@@ -2,12 +2,14 @@ class Solution {
 public:
     string removeKdigits(string num, int k) {
 
+        string res = "";
         int n = num.size();
         vector<char> ans;
-        if(n==k) return "0";
-        string res = "";
 
-        for(int i=0;i<n;i++){
+        if(n==k) return "0";
+
+        for(int i=0; i<n ;i++){
+
             while(!ans.empty() && ans.back()>num[i] && k>0){
                 ans.pop_back();
                 k--;
@@ -21,13 +23,14 @@ public:
         }
 
         bool leading = true;
-        for(char it:ans){
+        for(auto it:ans){
             if(leading && it=='0') continue;
             leading = false;
             res += it;
         }
 
         if(res=="") return "0";
-        return res; 
+        return res;
+        
     }
 };
