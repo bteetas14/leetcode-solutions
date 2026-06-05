@@ -12,14 +12,15 @@ public:
         vector<vector<int>> vis(n, vector<int>(m,0));
         queue<pair<pair<int, int>, int>> q;
         q.push({{0,0}, 1});
+        vis[0][0] = 1;
 
         while(!q.empty()){
             auto [r, c] = q.front().first;
             int dist = q.front().second;
             q.pop();
 
-            if(vis[r][c]==1) continue;
-            vis[r][c] = 1;
+            // if(vis[r][c]==1) continue;
+            // vis[r][c] = 1;
 
             if(r==n-1 && c==m-1) return dist;
 
@@ -29,6 +30,7 @@ public:
 
                 if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && vis[nrow][ncol]==0 && grid[nrow][ncol]==0){
                     q.push({{nrow, ncol}, dist+1});
+                    vis[nrow][ncol] = 1;
                 }
             }
         }
