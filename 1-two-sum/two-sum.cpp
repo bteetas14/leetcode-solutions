@@ -4,10 +4,8 @@ public:
 
         int n = nums.size();
         unordered_map<int, int> mpp;
-        int sum = 0;
 
         for(int i=0;i<n;i++){
-            sum += nums[i];
             int rem = target - nums[i];
 
             if(mpp.find(rem) != mpp.end()){
