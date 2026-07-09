@@ -39,8 +39,10 @@ public:
             Node* curr = q.front();
             q.pop();
 
+            auto currNeighbors = curr->neighbors;
+
             // Traverse all neighbors
-            for (Node* neighbor : curr->neighbors) {
+            for (Node* neighbor : currNeighbors) {
 
                 // If neighbor hasn't been cloned yet
                 if (cloneMap.find(neighbor) == cloneMap.end()) {
