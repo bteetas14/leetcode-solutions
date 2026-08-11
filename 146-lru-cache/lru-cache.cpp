@@ -22,11 +22,11 @@ public:
     }
 
     void addNode(Node* node){
-        Node* nex = head->next;
+        Node* top = head->next;
         head->next = node;
-        node->next = nex;
         node->prev = head;
-        nex->prev = node;
+        node->next = top;
+        top->prev = node;
     }
 
     void deleteNode(Node* node){
@@ -37,22 +37,23 @@ public:
     }
     
     int get(int key) {
-        if(mpp.find(key) != mpp.end()){
-            Node* n = mpp[key];
-            int val = n->value;
+        if(mpp.find(key)!=mpp.end()){
+            auto n = mpp[key];
+            int v = n->value;
             mpp.erase(key);
             deleteNode(n);
             addNode(n);
             mpp[key] = head->next;
-            return val;
+            return v;
         }
         return -1;
     }
     
     void put(int key, int value) {
-        Node* newNode = new Node(key, value);
+        Node *newNode = new Node(key, value);
+
         if(mpp.find(key)!=mpp.end()){
-            Node* n = mpp[key];
+            auto n = mpp[key];
             mpp.erase(key);
             deleteNode(n);
         }
