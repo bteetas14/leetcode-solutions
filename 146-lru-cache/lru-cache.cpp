@@ -41,7 +41,6 @@ public:
         if(mpp.find(key) != mpp.end()){
             auto n = mpp[key];
             int v = n->value;
-            mpp.erase(key);
             deleteNode(n);
             addNode(n);
             mpp[key] = n;
