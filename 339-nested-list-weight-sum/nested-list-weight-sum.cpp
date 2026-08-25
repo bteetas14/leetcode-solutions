@@ -1,3 +1,30 @@
+class Solution {
+public:
+    int depthSum(vector<NestedInteger>& nestedList) {
+
+        int level = 0;
+        int sum = 0;
+
+        while(!nestedList.empty()){
+            level++;
+            vector<NestedInteger> nextList;
+
+            for(auto& it:nestedList){
+
+                if(it.isInteger()){
+                    sum += level * it.getInteger();
+                }
+                else{
+                    for(auto& x:it.getList()){
+                        nextList.push_back(x);
+                    }
+                }
+            }
+            nestedList = nextList;
+        }
+        return sum;
+    }
+};
 /**
  * // This is the interface that allows for creating nested lists.
  * // You should not implement it, or speculate about its implementation
@@ -27,31 +54,3 @@
  *     const vector<NestedInteger> &getList() const;
  * };
  */
-class Solution {
-public:
-    int depthSum(vector<NestedInteger>& nestedList) {
-
-        int totalSum = 0;
-        int level = 0;
-
-        while(!nestedList.empty()){
-            vector<NestedInteger> nextList;
-            level++;
-            
-            for(auto& it: nestedList){
-
-                if(it.isInteger()){
-                    totalSum += (level*it.getInteger());
-                }
-                else{
-                    auto temp = it.getList();
-                    for(auto& x:temp){
-                        nextList.push_back(x);
-                    }
-                }
-            }
-            nestedList = nextList;
-        }
-        return totalSum;
-    }
-};
