@@ -1,48 +1,36 @@
 class Solution {
 public:
-    bool solve(int ind, string s, unordered_set<string>& st, vector<int>& dp){
+    bool solve(int i, string &s, unordered_set<string> &dict, vector<int> &dp){
 
-        int n = s.size();
-        if(ind>n-1) return false;
-
-        if(dp[ind] != -1) return dp[ind];
-
-        if(st.count(s.substr(ind,n-ind))>0) return dp[ind] = true;
-
-        for(int i=ind;i<n;i++){
-            string sub = s.substr(ind, i-ind+1);
-
-            if(st.count(sub)>0){
-                if(solve(i+1, s, st, dp)==true) return dp[ind] = true;
-            }
+        if(i == s.size()){
+            return true; // succesfully the word is broken
         }
-        return dp[ind] = false;
-    }
 
-    bool wordBreak(string s, vector<string>& wordDict) {
+        if(dp[i]!= -1) return dp[i];
 
-        int n = s.size();
+        string word = "";
 
-        unordered_set<string> st(wordDict.begin(), wordDict.end());
-        // vector<int> dp(n, -1);
-        // return solve(0, s, st, dp);
+        for(int j=i;j<s.size();j++){
+            word += s[j];
 
-        vector<bool> dp(n, false);
-
-        for(int ind=n-1; ind>=0; ind--){
-            if(st.count(s.substr(ind,n-ind))>0){
-                dp[ind] = true;
-            }
-            else{
-                for(int i=ind;i<n;i++){
-                    string sub = s.substr(ind, i-ind+1);
-
-                    if(st.count(sub)>0){
-                        if(dp[i+1]==true) dp[ind] = true;
-                    }
+            if(dict.count(word) > 0){
+                if(solve(j+1, s, dict, dp)) {
+                    return dp[i] = true;
                 }
             }
         }
-        return dp[0];
+        return dp[i] = 0;
+    }
+
+
+    bool wordBreak(string s, vector<string>& wordDict) {
+
+        unordered_set<string> dict(wordDict.begin(), wordDict.end());
+
+        int n = s.size();
+
+        vector<int> dp(n, -1);
+        return solve(0, s, dict, dp);
+        
     }
 };
